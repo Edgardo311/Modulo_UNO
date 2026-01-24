@@ -55,7 +55,7 @@ if (calificacion >= 90) {
 } else if (calificacion >= 60 &&  calificacion < 70) {
     console.log("Calificación D")
 } else {
-    console.log("F")
+    console.log("Calificación F")
 }
 
 
@@ -99,5 +99,5 @@ if (calificacion >= 90) {
 } else if (calificacion >= 60 &&  calificacion < 70) {
     console.log("Calificación D")
 } else {
-    console.log("CalificaciónF")
+    console.log("Calificación F")
 }
