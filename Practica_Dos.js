@@ -10,7 +10,7 @@ F = 0- 59;
 
 
 Arreglos
-CalificacionesUno [85, 90, 78, 92, 88];
+CalificacionesUno [85, 90, 78, 1, 4];
 CalificacionesDos [85, 90, 78];
 CalificacionesTres [65, 70, 72, 68, 60];
 */
@@ -47,13 +47,13 @@ console.log(`Mi promedio es ", ${Promedio}`);
 let calificacion = Promedio;
 
 if (calificacion >= 90) {
-    console.log("A")
+    console.log("Calificación A")
 } else if (calificacion >= 80 && calificacion < 90){
-    console.log("B")
+    console.log("Calificación B")
 } else if (calificacion >= 70 && calificacion < 80) {
-    console.log("C")
+    console.log("Calificación C")
 } else if (calificacion >= 60 &&  calificacion < 70) {
-    console.log("D")
+    console.log("Calificación D")
 } else {
     console.log("F")
 }
@@ -62,7 +62,7 @@ if (calificacion >= 90) {
 console.log("====Fin de ejercicio====")
 
 
-let calificacionesUno = [85, 90, 78, 92, 88];
+let calificacionesUno = [85, 90, 78, 1, 4];
 console.log("Calificaciones: ", calificacionesUno);
 
 resultado = 0;
@@ -91,13 +91,13 @@ console.log(`Mi promedio es ", ${Promedio}`);
 calificacion = Promedio;
 
 if (calificacion >= 90) {
-    console.log("A")
+    console.log("Calificación A")
 } else if (calificacion >= 80 && calificacion < 90){
-    console.log("B")
+    console.log("Calificación B")
 } else if (calificacion >= 70 && calificacion < 80) {
-    console.log("C")
+    console.log("Calificación C")
 } else if (calificacion >= 60 &&  calificacion < 70) {
-    console.log("D")
+    console.log("Calificación D")
 } else {
-    console.log("F")
+    console.log("CalificaciónF")
 }
