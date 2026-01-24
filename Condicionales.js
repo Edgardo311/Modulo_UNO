@@ -1,6 +1,6 @@
 //Puede votar
 
-const edadVotante = 20;
+const edadVotante = 17;
 
 if (edadVotante >= 18) {
 
