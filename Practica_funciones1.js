@@ -27,7 +27,7 @@ let descuento = process.argv[3];
 console.log(precioOriginal);
 console.log(descuento); 
 
-PrecioOriginal = 100 "pesos"
+PrecioOriginal = 100
 Descuento = 15
 
 function DeterminarPrecioFinal (PrecioOriginal, Descuento) {
