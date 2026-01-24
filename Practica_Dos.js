@@ -44,16 +44,60 @@ Promedio = resultado / calificacionesTres.length;
 // Todo: Muestra un Mensaje "Mi promedio es: [resultado]"
 console.log(`Mi promedio es ", ${Promedio}`);
 
-const calificacion = promedio; 
-let parametro;
+let calificacion = Promedio;
 
-switch (calificacion){
-    case 1:
-        calificacion = promedio > 80, "Lacalificacion es A";
-        break;
-    default:
-        nombreDia = "Dia invalido"
+if (calificacion >= 90) {
+    console.log("A")
+} else if (calificacion >= 80 && calificacion < 90){
+    console.log("B")
+} else if (calificacion >= 70 && calificacion < 80) {
+    console.log("C")
+} else if (calificacion >= 60 &&  calificacion < 70) {
+    console.log("D")
+} else {
+    console.log("F")
 }
 
-console.log("Calificacion es: ", calificacion);
-console.log("Fin de ejercicio 1")
+
+console.log("====Fin de ejercicio====")
+
+
+let calificacionesUno = [85, 90, 78, 92, 88];
+console.log("Calificaciones: ", calificacionesUno);
+
+resultado = 0;
+promedio;
+
+
+for (let i = 0; i < calificacionesUno.length; i++) {
+    //primera vez de i = 0; resultado = 0 + calificación[0];
+    //segunda vez de i = 1; resultado = resultado(65) + calificación[1](70); = 135
+    //tercera vez de i = 2; resultado = resultado(135) + calificación[2](72);
+    //cuarta vez de i = 3; resultado = resultado(207) + calificación[3](68);
+    //cuarta vez de i = 4; resultado = resultado(275) + calificación[4](60); 
+    console.log("CalificacionesUno:", i);
+
+    resultado = resultado + calificacionesUno[i];
+    
+}
+
+console.log("Suma de calificaciones: ", resultado);
+
+Promedio = resultado / calificacionesUno.length;
+
+// Todo: Muestra un Mensaje "Mi promedio es: [resultado]"
+console.log(`Mi promedio es ", ${Promedio}`);
+
+calificacion = Promedio;
+
+if (calificacion >= 90) {
+    console.log("A")
+} else if (calificacion >= 80 && calificacion < 90){
+    console.log("B")
+} else if (calificacion >= 70 && calificacion < 80) {
+    console.log("C")
+} else if (calificacion >= 60 &&  calificacion < 70) {
+    console.log("D")
+} else {
+    console.log("F")
+}
