@@ -15,9 +15,17 @@ CalificacionesDos [85, 90, 78];
 CalificacionesTres [65, 70, 72, 68, 60];
 */
 
-let calificaciones = [65, 70, 72, 68, 60];
-console.log("Calificaciones:", calificaciones);
 let resultado = 0;
+let promedio = 0;
+
+
+let calificacionesTres = [65, 70, 72, 68, 60];
+console.log("Calificaciones: ", calificacionesTres);
+
+
+for (let i = 0; i < calificacionesTres.length; i++) {
+    resultado = resultado + calificacionesTres[i];
+}
 
 // Todo: Muestra un Mensaje "Mi promedio es: [resultado]"
 console.log(`Mi promedio es ", ${resultado}`);
