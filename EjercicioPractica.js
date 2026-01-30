@@ -24,9 +24,12 @@ Ceros: 2
 
 //Crea un programa que recorra un arreglo de numeros y determine
 
-const numerosUno = [5, -3, 0, 12 -7, 0, 9];
-const numerosDos = [0, 0, 0, 4, 8];
-const numerosTres = [-1, -5, -10, 3, 6];
+
+
+
+let numerosUno = [5, -3, 0, 12 -7, 0, 9];
+let numerosDos = [0, 0, 0, 4, 8];
+let numerosTres = [-1, -5, -10, 3, 6];
 
 console.log("Numeros: ", numerosUno);
 
@@ -54,6 +57,11 @@ for ( let i = 0; i < numerosUno.length; i++){
     }
 
 
+
+
 console.log("Ceros: ", cero);
 console.log("Positivos: ", positivo);
 console.log("Positivos: ", negativo);
+
+
+
