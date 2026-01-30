@@ -1,6 +1,8 @@
 // Funciones
 
-
+let numerosUno = [5, -3, 0, 12 -7, 0, 9];
+let numerosDos = [0, 0, 0, 4, 8];
+let numerosTres = [-1, -5, -10, 3, 6];
 
 function contarNumeros(arregloNumeros){
     
@@ -23,14 +25,11 @@ function contarNumeros(arregloNumeros){
     console.log("Ceros: ", cero);
     console.log("Positivos: ", positivo);
     console.log("Positivos: ", negativo);
+    console.log("Total de números en el arreglo: ", arregloNumeros.length);
 
     }
 
 }
-
-let numerosUno = [5, -3, 0, 12 -7, 0, 9];
-let numerosDos = [0, 0, 0, 4, 8];
-let numerosTres = [-1, -5, -10, 3, 6];
 
 
 contarNumeros(numerosUno);
