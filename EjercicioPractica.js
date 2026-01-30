@@ -61,7 +61,7 @@ for ( let i = 0; i < numerosUno.length; i++){
 
 console.log("Ceros: ", cero);
 console.log("Positivos: ", positivo);
-console.log("Positivos: ", negativo);
+console.log("Negativo: ", negativo);
 
 
 

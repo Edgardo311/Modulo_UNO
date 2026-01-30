@@ -11,8 +11,7 @@ function contarNumeros(arregloNumeros){
     let negativo = 0;
     
     for ( let i = 0; i < arregloNumeros.length; i++){
-    console.log("arregloNumeros:", i);
-
+    
     if(arregloNumeros[i] == 0)
     cero = cero + 1; 
 
@@ -24,14 +23,21 @@ function contarNumeros(arregloNumeros){
 
     console.log("Ceros: ", cero);
     console.log("Positivos: ", positivo);
-    console.log("Positivos: ", negativo);
+    console.log("Negativo: ", negativo);
     console.log("Total de números en el arreglo: ", arregloNumeros.length);
 
     }
 
 }
 
+console.log('Primero arreglo');
 
 contarNumeros(numerosUno);
+
+console.log('Segundo arreglo');
+
 contarNumeros(numerosDos);
+
+console.log('Tercer arreglo');
+
 contarNumeros(numerosTres);
