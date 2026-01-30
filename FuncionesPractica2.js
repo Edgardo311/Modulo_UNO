@@ -31,13 +31,10 @@ function contarNumeros(arregloNumeros){
 }
 
 console.log('Primero arreglo');
-
 contarNumeros(numerosUno);
 
 console.log('Segundo arreglo');
-
 contarNumeros(numerosDos);
 
 console.log('Tercer arreglo');
-
 contarNumeros(numerosTres);
