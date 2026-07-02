@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "myTax",
-    "slug": "myTax",
+    "name": "MiFactura",
+    "slug": "MiFactura",
     "version": "1.0.0",
     "sdkVersion": "54.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Iconsapp/MiFactura.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -21,10 +21,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "usesCleartextTraffic": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favIcon": "./assets/Mifactura.png"
     }
   }
 }

@@ -1,57 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View , Image} from 'react-native';
-import { SafeAreaView } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+
 
 const Header = () => {
-    return (
-        <SafeAreaView style={styles.headerContainer}>
-            <View style={styles.headerContainer}>
-                <Image
-                    source={require('../assets/MyTax.png')}
-                    style={styles.headerAppIcon}
-                />
+  return (
+      <View style={styles.headerTop}>
+        <Image
+          source={require('../assets/Iconsapp/MiFactura.png')}
+          style={styles.icon}
+        />
 
-               <Text style={styles.headerTitle}>MiFactura</Text>
-            </View>
-        </SafeAreaView>        
-    
-    );
+        <Text style={styles.title}>MiFactura</Text>
+      </View>
+  );
 };
 
-const styles= StyleSheet.create({
-    headerContainer: {
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: '#2c3e50',
-        paddingVertical: 6,
-        paddingHorizontal: 10,       
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2},
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    headerAppIcon: {
-        width: 40,
-        height: 40,
-        resizeMode: 'contain',
-        marginRight: 8,
-        marginTop: 35,
-        borderRadius: 10,
-        borderWidth: 0.5,
-    },
-    headerTitle: {
-        fontSize: 22,
-        fontWeight: '600',
-        color: '#bed4df',
-        marginTop: 35,
-        padding: 8,
-        textAlign: 'center',
-        }
-    
-    },
-);
+const styles = StyleSheet.create({
+
+
+headerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 80,
+    width: "100%",
+    paddingTop: 0,
+    paddingHorizontal: 15,
+    backgroundColor: '#1d4267',
+     
+},
+
+icon: {
+  width: 40,
+  height: 40,
+  marginRight: 10,
+  borderRadius: 10,
+},
+
+title: {
+  fontSize: 25,
+  color: '#bed4df',
+  fontWeight: 'bold',
+
+},
+
+
+});
 
 export default Header;

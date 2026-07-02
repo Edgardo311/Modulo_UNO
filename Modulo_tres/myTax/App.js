@@ -1,34 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View , Image, TouchableOpacity} from 'react-native';
-import Header from './Components/header';
-import BotonFacturacion from './Components/Buttons.js';
-import React, { useState } from 'react';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MainApp from './Layout'; 
+import LoginScreen from './LoginScreen';
+import { AutoProvider } from './AutoContext';
 
+const Stack = createStackNavigator();
 
 export default function App() {
-
-  
-  const [visible, setVisible] = useState(false);
-
   return (
-    <View style={styles.container}>
-    
-      <Header />
-      <BotonFacturacion />
-
-
-      <StatusBar style="auto" />
-    </View>
+    <AutoProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="MainApp" component={MainApp} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AutoProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-
-
-});
