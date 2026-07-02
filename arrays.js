@@ -12,3 +12,5 @@ console.log("Primer número", numeros[0]); //Acceso al primer elemento
 let mezclado = ["texto", 100, true, 3.14]; //Array con tipos mixtos
 console.log("Array mezclado:", mezclado);
 console.log("Segundo elemento del array mezclado", mezclado[1]); //Acceso al segundo elemento
+
+//Hola
