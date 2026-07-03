@@ -14,7 +14,7 @@
   import { Platform } from 'react-native';
 
 
-  export default function Accionesprincipales() {
+export default function Accionesprincipales({ resetKey }) {
     const [openMenu, setOpenMenu] = useState(null);
     const [activeMenu, setActiveMenu] = useState(null);
     const [search, setSearch] = useState('');   // 👉 Paso 1: estado para buscador
@@ -25,16 +25,13 @@
 
 
 
-    
-    
-    const [leyes, setLeyes] = useState([]);   // 👈 NUEVO estado para almacenar las leyes
+    const [leyes, setLeyes] = useState([]);
 
-    const cerrarMenus = () => {
-      setOpenMenu(null);
-      setActiveMenu(null);
-      Keyboard.dismiss(); // cierra teclado si está abierto
-    };
-
+useEffect(() => {
+  setOpenMenu(null);
+  setActiveMenu(null);
+  Keyboard.dismiss();
+}, [resetKey]);
 
     // Listado de leyes
 useEffect(() => {
@@ -62,10 +59,16 @@ useEffect(() => {
 
 
   return (
+
     <SafeAreaView style={{ flex: 1 }}>
 
+
       {/* ✅ CONTENIDO */}
-      <ScrollView style={{ flex: 1 }}>
+
+        <ScrollView
+          style={{ flex: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
 
         <View style={styles.horizontalContainer}>
 
@@ -110,7 +113,7 @@ useEffect(() => {
         </View>
       )}
 
-      {/* ✅ COMPLEMENTO (AHORA BIEN UBICADO) */}
+      {/* ✅ COMPLEMENTO */}
       <TouchableOpacity
         style={[styles.option, activeMenu === 'complemento' && styles.optionActive]}
         onPress={() =>
@@ -297,7 +300,7 @@ useEffect(() => {
       >
         <Text style={styles.buttontext}>Salir</Text>
       </TouchableOpacity>
-        
+      
     </SafeAreaView>
   )}
 
@@ -334,24 +337,28 @@ useEffect(() => {
       marginLeft: 27,
       marginRight: 27,
       paddingTop: 10,
+      zIndex: 1000,
   },
 
   ContainerExpediente: {
       alignItems: 'center',
       marginRight: 17,
       paddingTop: 10,
+      zIndex: 1000,
   },
 
   ContainerConsultas: {
       alignItems: 'center',
       marginRight: 27,
       paddingTop: 10,
+      zIndex: 1000,
   },
 
   ContainerSAT: {
       alignItems: 'center',
       marginRight: 27,
       paddingTop: 10,
+      zIndex: 1000,
   },
 
     Button: {
@@ -384,6 +391,7 @@ useEffect(() => {
 
   dropdown: {
       position: 'absolute',
+      zIndex: 1000,
       top: '100%',
       left: 0,
       marginTop: 8,
@@ -432,6 +440,8 @@ useEffect(() => {
     fontSize: 18,
     fontWeight: 'bold',
   },
+
+
 
   });
 

@@ -1,38 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
-import Header from './Components/Header';
-import Accionesprincipales from './Components/Accionesprincipales';
-import SearchBar from './Components/SearchBar';
-import { SafeAreaView } from 'react-native-safe-area-context';
+  import { StatusBar } from 'expo-status-bar';
+  import { StyleSheet, View, Pressable} from 'react-native';
+  import React, { useState } from 'react';
+  import Header from './Components/Header';
+  import Accionesprincipales from './Components/Accionesprincipales';
+  import SearchBar from './Components/SearchBar';
+  import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function MainApp() {
-  const [resetKey, setResetKey] = useState(0);
+  export default function MainApp() {
+    const [resetKey, setResetKey] = useState(0);
 
-  const cerrarMenusGlobal = () => {
-    setResetKey(prev => prev + 1);
-  };
+    const cerrarMenusGlobal = () => {
+      setResetKey(prev => prev + 1);
+    };
 
-  return (
+    return (
 
-    <SafeAreaView style={styles.container}>
+      <Pressable
+        style={{ flex: 1 }}
+        onPress={cerrarMenusGlobal}
+      >
 
-      <Header />
-      <SearchBar resetKey={resetKey} />
-      <Accionesprincipales resetKey={resetKey} />
-      <StatusBar style="auto" />
-    
-    </SafeAreaView>
-  );
-}
+        <SafeAreaView style={styles.container}>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-});
+          <Header />
+        
+        
+          <SearchBar resetKey={resetKey} />
+          <Accionesprincipales resetKey={resetKey} />
+          <StatusBar style="auto" />
+      
+      </SafeAreaView>
+      </Pressable>
+    );
+  }
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
+  });
 
 
