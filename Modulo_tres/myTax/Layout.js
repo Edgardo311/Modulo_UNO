@@ -23,10 +23,12 @@
         <SafeAreaView style={styles.container}>
 
           <Header />
-        
-        
+                
           <SearchBar resetKey={resetKey} />
-          <Accionesprincipales resetKey={resetKey} />
+          <Accionesprincipales
+            resetKey={resetKey}
+            cerrarMenusGlobal={cerrarMenusGlobal} 
+          />        
           <StatusBar style="auto" />
       
       </SafeAreaView>

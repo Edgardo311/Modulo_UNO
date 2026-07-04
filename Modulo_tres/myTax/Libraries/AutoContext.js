@@ -27,7 +27,6 @@ export const AutoProvider = ({ children }) => {
     };
 
 const signIn = async (username, password) => {
-    // Lógica de autenticación aquí
     if (username === "admin" && password === "password") {
             const userData = {
                 id:1,

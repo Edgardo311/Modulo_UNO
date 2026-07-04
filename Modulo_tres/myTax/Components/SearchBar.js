@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 export default function SearchBar({ resetKey }) {
   const [search, setSearch] = useState('');
@@ -27,16 +33,15 @@ export default function SearchBar({ resetKey }) {
     'Expediente',
     'Constancia de situación fiscal',
     'Opinión de cumplimiento',
-    'SAT'
+    'SAT',
   ];
 
-  const filtrados = opciones.filter(item =>
+  const filtrados = opciones.filter((item) =>
     item.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <View style={styles.container}>
-
       <TextInput
         placeholder="Buscar..."
         placeholderTextColor="#999"
@@ -45,14 +50,17 @@ export default function SearchBar({ resetKey }) {
         style={styles.input}
       />
 
-      {search !== '' && filtrados.map((item, index) => {
-        const texto = typeof item === 'string' ? item : String(item);
-        return (
-          <TouchableOpacity key={index} onPress={() => setSearch(texto)}>
-            <Text style={styles.result}>{texto}</Text>
+      {search !== '' &&
+        filtrados.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => setSearch(item)}
+          >
+            <Text style={styles.result}>
+              {item}
+            </Text>
           </TouchableOpacity>
-        );
-      })}
+        ))}
     </View>
   );
 }
@@ -62,8 +70,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: 15,
-    marginBottom: -20.
-    ,
+    marginBottom: -20,
     backgroundColor: '#a6b07e',
     borderRadius: 7,
     padding: 1,
@@ -80,5 +87,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: '#c3dbbf',
     borderRadius: 5,
-  }
+  },
 });

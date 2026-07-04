@@ -1,34 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Linking,
+  Platform,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+const getApiBaseUrl = () => {
+  return 'http://192.168.0.3:3000';
+};
 
 export default function Leyes() {
   const [leyes, setLeyes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const cargarLeyes = async (fromCache = false) => {
     try {
+      setLoading(true);
+
       if (fromCache) {
         const cache = await AsyncStorage.getItem('leyes');
         if (cache) {
-          console.log('Leyendo del caché:', cache);
-          setLeyes(JSON.parse(cache));
+          const parsed = JSON.parse(cache);
+          setLeyes(parsed);
+          setLoading(false);
           return;
         }
       }
 
-      const response = await fetch('http://10.0.2.2:3000/leyes');
-      const data = await response.json();
-      console.log('Datos recibidos del backend:', data);
+      const url = `${getApiBaseUrl()}/api/leyes`;
 
-      // ✅ fuerza a que siempre sea un array
+console.log('URL:', `${getApiBaseUrl()}/api/leyes`);
+
+const response = await fetch(`${getApiBaseUrl()}/api/leyes`);
+
+console.log('STATUS:', response.status);
+
+const data = await response.json();
+
+console.log('DATOS:', data.length);
+
       const lista = Array.isArray(data) ? data : [];
-
-      // ✅ convierte cada campo a string seguro
       const listaSegura = lista.map((item, index) => ({
-        id: item?.id ? String(item.id) : String(index), // clave única
+        id: item?.id != null ? String(item.id) : `ley-${index}`,
         nombre: item?.nombre ? String(item.nombre) : 'Sin nombre',
-        fechaReforma: item?.fechaReforma ? String(item.fechaReforma) : 'No disponible',
+        fechaReforma: item?.fechaReforma
+          ? String(item.fechaReforma)
+          : 'No disponible',
         pdf: item?.pdf ? String(item.pdf) : '',
       }));
 
@@ -36,53 +62,101 @@ export default function Leyes() {
       setLeyes(listaSegura);
     } catch (error) {
       console.error('Error cargando leyes:', error);
-      setLeyes([]); // evita que se quede con datos corruptos
+      setLeyes([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
   };
 
   useEffect(() => {
-    // Primero carga desde caché, luego refresca desde el backend
-    cargarLeyes(true);
     cargarLeyes();
   }, []);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await cargarLeyes(); // fuerza consulta al backend
-    setRefreshing(false);
+    await cargarLeyes();
   };
 
+const abrirPdf = async (pdf) => {
+  console.log('PDF:', pdf);
+
+  if (!pdf) return;
+
+  try {
+    await Linking.openURL(pdf);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   return (
-    <View style={{ flex: 1, padding: 10 }}>
+    <View style={styles.container}>
+      {loading && !refreshing ? (
+        <ActivityIndicator size="large" color="#13710e" />
+      ) : null}
+
+      <Text style={{ color: 'red', fontSize: 20 }}>
+        Leyes: {leyes.length}
+      </Text>
+
       <FlatList
+        nestedScrollEnabled={true}
+        scrollEnabled={false}
         data={leyes}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        ListEmptyComponent={
+          !loading ? (
+            <Text style={styles.emptyText}>No hay leyes disponibles</Text>
+          ) : null
+        }
         renderItem={({ item }) => (
-          <View style={{ marginBottom: 15 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
-              {item.nombre}
-            </Text>
-            <Text style={{ color: 'gray' }}>
+          <View style={styles.card}>
+            <Text style={styles.title}>{item.nombre}</Text>
+            <Text style={styles.subtitle}>
               Última reforma: {item.fechaReforma}
             </Text>
-            <TouchableOpacity
-              onPress={() => item.pdf && console.log('Abrir PDF:', item.pdf)}
-            >
-              <Text style={{ color: 'blue' }}>Ver PDF</Text>
+            <TouchableOpacity onPress={() => abrirPdf(item.pdf)}>
+              <Text style={styles.linkText}>
+                {item.pdf ? 'Ver PDF' : 'Sin PDF disponible'}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
       />
-
-      {/* ✅ Mensaje si no hay leyes */}
-      {leyes.length === 0 && (
-        <Text style={{ textAlign: 'center', marginTop: 20 }}>
-          No hay leyes disponibles
-        </Text>
-      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  card: {
+    marginBottom: 15,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: '#f7f7f7',
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  subtitle: {
+    color: 'gray',
+    marginBottom: 6,
+  },
+  linkText: {
+    color: '#13710e',
+    fontWeight: '600',
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+  },
+});
