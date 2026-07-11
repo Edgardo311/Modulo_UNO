@@ -11,11 +11,7 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-const getApiBaseUrl = () => {
-  return 'http://192.168.0.3:3000';
-};
+import { getApiBaseUrl } from '../config';
 
 export default function Leyes() {
   const [leyes, setLeyes] = useState([]);
@@ -36,17 +32,18 @@ export default function Leyes() {
         }
       }
 
-      const url = `${getApiBaseUrl()}/api/leyes`;
+      const baseUrl = getApiBaseUrl();
+      const url = `${baseUrl}/api/leyes`;
 
-console.log('URL:', `${getApiBaseUrl()}/api/leyes`);
+      console.log('URL:', url);
 
-const response = await fetch(`${getApiBaseUrl()}/api/leyes`);
+      const response = await fetch(url);
 
-console.log('STATUS:', response.status);
+      console.log('STATUS:', response.status);
 
-const data = await response.json();
+      const data = await response.json();
 
-console.log('DATOS:', data.length);
+      console.log('DATOS:', data.length);
 
       const lista = Array.isArray(data) ? data : [];
       const listaSegura = lista.map((item, index) => ({

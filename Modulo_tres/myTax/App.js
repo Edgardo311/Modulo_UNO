@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import MainApp from './Layout'; 
+import MainNavigator from './navigation/MainNavigator';
 import LoginScreen from './LoginScreen';
 import { AutoProvider } from './AutoContext';
 
@@ -13,7 +13,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="MainApp" component={MainApp} />
+          <Stack.Screen name="MainApp" component={MainNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     </AutoProvider>

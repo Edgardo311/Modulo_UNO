@@ -85,6 +85,42 @@ export default function Accionesprincipales({ resetKey, cerrarMenusGlobal }) {
                     ))}
                   </View>
                 )}
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => {
+                    setOpenMenu(null);
+                    navigation.navigate('CFDIForm');
+                  }}
+                >
+                  <Text style={styles.optionTextsecundarios}>Crear CFDI</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => {
+                    setOpenMenu(null);
+                    navigation.navigate('Borradores');
+                  }}
+                >
+                  <Text style={styles.optionTextsecundarios}>Borradores</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => {
+                    setOpenMenu(null);
+                    navigation.navigate('EmisoresList');
+                  }}
+                >
+                  <Text style={styles.optionTextsecundarios}>Emisores</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.option}
+                  onPress={() => {
+                    setOpenMenu(null);
+                    navigation.navigate('ReceptoresList');
+                  }}
+                >
+                  <Text style={styles.optionTextsecundarios}>Receptores</Text>
+                </TouchableOpacity>
               </View>
             )}
           </View>

@@ -1,0 +1,46 @@
+{
+  "name": "Mytax_backend",
+  "version": "1.0.0",
+  "description": "Mi primer backen en express",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node src/database/migrations/migrate.js",
+    "seed": "node src/database/seeders/seed.js",
+    "test": "jest --runInBand",
+    "cjf:last-acuerdo": "node scripts/cjf-last-acuerdo.js"
+  },
+  "author": "Edgardo Flores",
+  "license": "MIT",
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.10",
+    "adm-zip": "^0.5.17",
+    "axios": "^1.18.1",
+    "bcryptjs": "^2.4.3",
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "fast-xml-parser": "^5.8.0",
+    "helmet": "^8.1.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^2.1.1",
+    "node-cron": "^4.5.0",
+    "node-forge": "^1.4.0",
+    "openai": "^6.44.0",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.13.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0",
+    "xml-crypto": "^6.1.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.7",
+    "supertest": "^7.0.0"
+  }
+}
