@@ -17,9 +17,10 @@ const parseJson = (value) => {
 };
 
 const getStorage = async (key) => {
-  const raw = await AsyncStorage.getItem(key);
-  return parseJson(raw);
+  const value = await AsyncStorage.getItem(key);
+  return parseJson(value);
 };
+
 
 const setStorage = async (key, data) => {
   await AsyncStorage.setItem(key, JSON.stringify(data || []));

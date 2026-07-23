@@ -6,6 +6,22 @@ const routes = require('./routes');
 const app = express();
 
 app.use(express.json());
+
+
+
+app.get('/ping', (req, res) => {
+  res.json({
+    ok: true,
+    message: 'servidor funcionando'
+  });
+});
+
+app.get('/prueba123', (req, res) => {
+  res.json({
+    backend: 'MYTAX_BACKEND'
+  });
+});
+
 app.use(loggerMiddleware);
 app.use(routes);
 app.use(errorMiddleware);

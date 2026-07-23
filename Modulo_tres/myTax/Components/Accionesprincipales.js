@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuto } from '../AutoContext';
 import Leyes from './Leyes';
 
+
 export default function Accionesprincipales({ resetKey, cerrarMenusGlobal }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -52,39 +53,7 @@ export default function Accionesprincipales({ resetKey, cerrarMenusGlobal }) {
 
             {openMenu === 'cfdi' && (
               <View style={styles.dropdown}>
-                <TouchableOpacity
-                  style={[styles.option, activeMenu === 'factura' && styles.optionActive]}
-                  onPress={() => setActiveMenu(activeMenu === 'factura' ? null : 'factura')}
-                >
-                  <Text style={styles.optionTextsecundarios}>Factura</Text>
-                </TouchableOpacity>
 
-                {activeMenu === 'factura' && (
-                  <View style={styles.submenu}>
-                    {facturaOptions.map((item, index) => (
-                      <TouchableOpacity key={index} style={styles.option}>
-                        <Text>{String(item)}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
-
-                <TouchableOpacity
-                  style={[styles.option, activeMenu === 'complemento' && styles.optionActive]}
-                  onPress={() => setActiveMenu(activeMenu === 'complemento' ? null : 'complemento')}
-                >
-                  <Text style={styles.optionTextsecundarios}>Complemento</Text>
-                </TouchableOpacity>
-
-                {activeMenu === 'complemento' && (
-                  <View style={styles.submenu}>
-                    {complementoOptions.map((item, index) => (
-                      <TouchableOpacity key={index} style={styles.option}>
-                        <Text style={styles.optionTextterciarios}>{String(item)}</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                )}
                 <TouchableOpacity
                   style={styles.option}
                   onPress={() => {
@@ -179,13 +148,20 @@ export default function Accionesprincipales({ resetKey, cerrarMenusGlobal }) {
                     style={styles.option}
                     onPress={() => {
                       setOpenMenu(null);
-                      setActiveMenu('legislacion');
+
+                      setActiveMenu(
+                        activeMenu === 'legislacion'
+                          ? null
+                          : 'legislacion'
+                      );
                     }}
                   >
-                    <Text style={styles.optionTextsecundarios}>{item.label}</Text>
+                    <Text style={styles.optionTextsecundarios}>
+                      {item.label}
+                    </Text>
                   </TouchableOpacity>
                 ))}
-
+                
                 <TouchableOpacity style={styles.option}>
                   <Text style={styles.optionTextsecundarios}>Noticias</Text>
                 </TouchableOpacity>
@@ -231,6 +207,7 @@ export default function Accionesprincipales({ resetKey, cerrarMenusGlobal }) {
             <Leyes />
           </View>
         )}
+
 
         {activeMenu === 'satWeb' && (
           <View style={{ height: 500 }}>
@@ -354,16 +331,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-const facturaOptions = ['Ingresos', 'Anticipo', 'Egresos'];
-const complementoOptions = [
-  'Carta porte',
-  'Comercio exterior',
-  'Compraventa de divisas',
-  'Consumo de combustible',
-  'Donatarias',
-  'Fideicomisos',
-  'Nóminas',
-  'Notarios públicos',
-  'Retenciones',
-];

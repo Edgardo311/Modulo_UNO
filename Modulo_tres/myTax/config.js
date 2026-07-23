@@ -2,7 +2,7 @@ export const ENVIRONMENT = __DEV__ ? 'development' : 'production';
 
 const ENV_CONFIG = {
   development: {
-    apiBaseUrl: 'http://192.168.1.76:3000',
+    apiBaseUrl: 'http://192.168.0.9:3000',
   },
   production: {
     apiBaseUrl: 'https://tu-dominio.com',

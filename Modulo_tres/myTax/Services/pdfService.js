@@ -10,7 +10,7 @@ const buildInvoiceHTML = (cfdi) => {
           <td>${concepto.descripcion}</td>
           <td>${concepto.cantidad || ''}</td>
           <td>${concepto.unidad || ''}</td>
-          <td>${concepto.valor || ''}</td>
+          <td>${concepto.valorUnitario || ''}</td>
         </tr>`
     )
     .join('');
@@ -28,9 +28,12 @@ const buildInvoiceHTML = (cfdi) => {
       </head>
       <body>
         <h1>CFDI</h1>
-        <p><strong>Emisor:</strong> ${cfdi.emisor?.nombre || ''}</p>
-        <p><strong>Receptor:</strong> ${cfdi.receptor?.nombre || ''}</p>
-        <table>
+<p><strong>Emisor:</strong> ${cfdi.emisor?.nombre || ''}</p>
+<p><strong>RFC:</strong> ${cfdi.emisor?.rfc || ''}</p>
+
+<p><strong>Receptor:</strong> ${cfdi.receptor?.nombre || ''}</p>
+<p><strong>RFC:</strong> ${cfdi.receptor?.rfc || ''}</p>
+<p><strong>CP:</strong> ${cfdi.receptor?.codigoPostal || ''}</p>        <table>
           <thead>
             <tr>
               <th>Descripción</th>
@@ -43,20 +46,59 @@ const buildInvoiceHTML = (cfdi) => {
             ${conceptosRows}
           </tbody>
         </table>
-        <p><strong>Subtotal:</strong> ${cfdi.subtotal || 0}</p>
-        <p><strong>Impuestos:</strong> ${cfdi.totalImpuestos || 0}</p>
-        <p><strong>Total:</strong> ${cfdi.total || 0}</p>
+<p>
+  <strong>Subtotal:</strong>
+  ${Number(cfdi.subtotal || 0).toLocaleString('es-MX', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}
+</p>
+
+<p>
+  <strong>IVA:</strong>
+  ${Number(cfdi.iva || 0).toLocaleString('es-MX', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}
+</p>
+
+<p>
+  <strong>Retención IVA:</strong>
+  ${Number(cfdi.retIVA || 0).toLocaleString('es-MX', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}
+</p>
+
+<p>
+  <strong>Retención ISR:</strong>
+  ${Number(cfdi.retISR || 0).toLocaleString('es-MX', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}
+</p>
+
+<p>
+  <strong>Total:</strong>
+  ${Number(cfdi.total || 0).toLocaleString('es-MX', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}
+</p>
       </body>
     </html>`;
 };
 
 export const generatePDF = async (cfdi) => {
+
   const html = buildInvoiceHTML(cfdi);
-  const options = { html };
-  const { uri } = await Print.printToFileAsync(options);
-  const pdfUri = `${FileSystem.documentDirectory}cfdi-${cfdi.id || Date.now()}.pdf`;
-  await FileSystem.copyAsync({ from: uri, to: pdfUri });
-  return pdfUri;
+
+  const { uri } =
+    await Print.printToFileAsync({
+      html,
+    });
+
+  return uri;
 };
 
 export const sharePDF = async (pdfUri) => {

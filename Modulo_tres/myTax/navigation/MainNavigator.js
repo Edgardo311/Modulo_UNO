@@ -7,6 +7,7 @@ import ReceptoresListScreen from '../Screens/ReceptoresListScreen';
 import ReceptorFormScreen from '../Screens/ReceptorFormScreen';
 import CFDIFormScreen from '../Screens/CFDIFormScreen';
 import BorradoresScreen from '../Screens/BorradoresScreen';
+import Leyes from '../Components/Leyes';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export default function MainNavigator() {
       <Stack.Screen name="ReceptorForm" component={ReceptorFormScreen} />
       <Stack.Screen name="CFDIForm" component={CFDIFormScreen} />
       <Stack.Screen name="Borradores" component={BorradoresScreen} />
+      <Stack.Screen name="Leyes" component={Leyes} />
     </Stack.Navigator>
   );
 }

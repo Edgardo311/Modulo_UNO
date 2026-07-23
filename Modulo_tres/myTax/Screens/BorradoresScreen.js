@@ -3,6 +3,7 @@ import { View, ScrollView, Text, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DraftItem from '../Components/DraftItem';
 import { getDrafts, deleteDraft } from '../Services/storageService';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function BorradoresScreen() {
   const navigation = useNavigation();
@@ -25,6 +26,7 @@ export default function BorradoresScreen() {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.container}>
       <Text style={styles.header}>Borradores</Text>
       <ScrollView style={styles.list}>
@@ -39,6 +41,7 @@ export default function BorradoresScreen() {
         {drafts.length === 0 && <Text style={styles.emptyText}>No hay borradores guardados</Text>}
       </ScrollView>
     </View>
+    </SafeAreaView>
   );
 }
 

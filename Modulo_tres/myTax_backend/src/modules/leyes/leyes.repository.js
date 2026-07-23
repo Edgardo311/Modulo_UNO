@@ -1,10 +1,10 @@
 const { URL } = require('url');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const { LEYES_URL, LEYES_BASE_URL } = require('../../config/env');
+const { legalLawsSourceUrl } = require('../../config/env');
 
 async function fetchLeyes() {
-  const response = await axios.get(LEYES_URL, {
+  const response = await axios.get(legalLawsSourceUrl, {
     headers: { 'User-Agent': 'Mozilla/5.0 ...' }
   });
 
@@ -37,7 +37,7 @@ async function fetchLeyes() {
           if (href && href.toLowerCase().includes('.pdf')) {
             pdf = href.startsWith('http')
               ? href
-              : new URL(href, LEYES_BASE_URL).href;
+              : new URL(href, legalLawsSourceUrl).href;
           }
         });
 

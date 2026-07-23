@@ -37,6 +37,9 @@ const env = {
   legalLawsRequestTimeoutMs: Number(process.env.LEGAL_LAWS_REQUEST_TIMEOUT_MS || 30000),
   legalLawsSyncEnabled: String(process.env.LEGAL_LAWS_SYNC_ENABLED || "true") === "true",
   legalLawsCronExpression: process.env.LEGAL_LAWS_CRON_EXPRESSION || "0 3 * * *",
+lawsApiUrl: process.env.LAWS_API_URL ||"http://localhost:3000",
 };
+
+
 
 module.exports = env;

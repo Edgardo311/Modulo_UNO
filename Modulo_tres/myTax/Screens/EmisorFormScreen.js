@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { saveEmisor } from '../Services/storageService';
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
+import {
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+
 import { createEmptyEmisor } from '../Models/EmisorModel';
+import { API_URL } from '../Libraries/config';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EmisorFormScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const [emisor, setEmisor] = useState(createEmptyEmisor());
+
+  const [emisor, setEmisor] = useState(
+    createEmptyEmisor()
+  );
 
   useEffect(() => {
     if (route.params?.emisor) {
@@ -16,25 +30,91 @@ export default function EmisorFormScreen() {
   }, [route.params]);
 
   const handleChange = (field, value) => {
-    setEmisor((prev) => ({ ...prev, [field]: value }));
-  };
+  setEmisor((prev) => ({
+    ...prev,
+    [field]: value,
+  }));
+};
 
-  const handleSave = async () => {
-    const id = emisor.id || String(Date.now());
-    await saveEmisor({ ...emisor, id });
+const handleSave = async () => {
+  try {
+    const emisorData = {
+      nombre: emisor.nombre,
+      rfc: emisor.rfc,
+      regimenFiscal: emisor.regimenFiscal,
+    };
+
+    console.log('API:', API_URL);
+    console.log('Enviando:', emisorData);
+
+    const response = await fetch(
+      `${API_URL}/facturacion/emisores`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emisorData),
+      }
+    );
+
+const text = await response.text();
+
+console.log('STATUS:', response.status);
+console.log('RESPUESTA:', text);
+
     navigation.goBack();
-  };
+  } catch (error) {
+    console.error(
+      'Error enviando emisor al backend:',
+      error
+    );
+  }
+};
 
-  return (
+    
+return (
+  <SafeAreaView style={{ flex: 1 }}>
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Emisor</Text>
-      <TextInput style={styles.input} placeholder="Nombre" value={emisor.nombre} onChangeText={(value) => handleChange('nombre', value)} />
-      <TextInput style={styles.input} placeholder="RFC" value={emisor.rfc} onChangeText={(value) => handleChange('rfc', value)} />
-      <TextInput style={styles.input} placeholder="Régimen fiscal" value={emisor.regimenFiscal} onChangeText={(value) => handleChange('regimenFiscal', value)} />
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Guardar</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre"
+        value={emisor.nombre}
+        onChangeText={(value) =>
+          handleChange('nombre', value)
+        }
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="RFC"
+        value={emisor.rfc}
+        onChangeText={(value) =>
+          handleChange('rfc', value)
+        }
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Régimen fiscal"
+        value={emisor.regimenFiscal}
+        onChangeText={(value) =>
+          handleChange('regimenFiscal', value)
+        }
+      />
+
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={handleSave}
+      >
+        <Text style={styles.saveButtonText}>
+          Guardar
+        </Text>
       </TouchableOpacity>
     </ScrollView>
+  </SafeAreaView>
   );
 }
 

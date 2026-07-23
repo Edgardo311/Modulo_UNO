@@ -4,126 +4,131 @@ const fetch = require('node-fetch');
 
 const app = express();
 
-function sanitizarHtml(html) {
-  const $ = cheerio.load(html, { decodeEntities: true });
+let cacheLeyes = null;
 
-  $('script, style, noscript, link, meta, svg, img').remove();
-  $('header, nav, footer, aside, form, .menu, .navbar, .top, .logo, .breadcrumb, .social, .share, .news-info-list, .header-social').remove();
-
-  $('body, main, article, section, table, p, h1, h2, h3, h4, li, ul, ol, a').each((_, el) => {
-    const $el = $(el);
-    $el.attr('style', null);
-  });
-
-  const body = $('body').html() || $('main').html() || $('article').html() || $('table').first().html() || '';
-
-  return `<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ley</title>
-    <style>
-      body { font-family: Arial, Helvetica, sans-serif; color: #111; background: #fff; margin: 0; padding: 10px; line-height: 1.4; }
-      p, li, td, th { font-size: 15px; }
-      table { width: 100%; border-collapse: collapse; }
-      td, th { border: 1px solid #ddd; padding: 6px; vertical-align: top; }
-      a { color: #0a5bb4; text-decoration: underline; }
-      h1, h2, h3 { color: #0f5a0f; margin-top: 10px; }
-    </style>
-  </head>
-  <body>${body}</body>
-</html>`;
-}
-
-app.get('/leyes', async (req, res) => {
+app.get('/api/leyes', async (req, res) => {
   try {
-    const urlFuente = 'https://www.diputados.gob.mx/LeyesBiblio/index.htm';
 
-    const response = await fetch(urlFuente, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'es-MX,es;q=0.9,en;q=0.8',
-        'Referer': 'https://www.diputados.gob.mx/'
-      },
-      timeout: 30000
-    });
+    if (cacheLeyes) {
+      return res.json(cacheLeyes);
+    }
+
+    const urlFuente =
+      'https://www.diputados.gob.mx/LeyesBiblio/index.htm';
+
+    const response = await fetch(urlFuente);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
 
-    const buffer = Buffer.from(await response.arrayBuffer());
-    const html = new TextDecoder('iso-8859-1').decode(buffer);
-    const $ = cheerio.load(html, { decodeEntities: true });
+    const buffer = Buffer.from(
+      await response.arrayBuffer()
+    );
 
-    const mapa = new Map();
+    const html = new TextDecoder(
+      'iso-8859-1'
+    ).decode(buffer);
 
-    $('table a[href^="ref/"]').each((_, el) => {
-      const rawHref = $(el).attr('href') || '';
-      const rawText = $(el).html() || '';
+    const $ = cheerio.load(html);
 
-      if (/facebook|twitter|youtube|mailto/i.test(rawHref)) return;
+    const lista = [];
 
-      const nombre = cheerio.load(`<html><body>${rawText}</body></html>`)
-        .root()
-        .text()
-        .replace(/\s+/g, ' ')
-        .trim();
+    const rows = $('table tr').toArray();
 
-      if (!nombre) return;
+    for (const row of rows) {
+      const cols = $(row).find('td');
 
-      const url = rawHref.startsWith('http')
+      if (cols.length < 2) continue;
+
+      const enlace = $(row)
+        .find('a[href*="ref/"]')
+        .first();
+
+      if (!enlace.length) continue;
+
+      const nombre = enlace.text().trim();
+
+      const rawHref =
+        enlace.attr('href') || '';
+
+      const ref = rawHref.startsWith('http')
         ? rawHref
         : `https://www.diputados.gob.mx/LeyesBiblio/${rawHref}`;
 
-      if (!mapa.has(url)) {
-        mapa.set(url, { nombre, url });
-      }
-    });
+      const fechaReforma =
+        $(cols[2]).text().trim() ||
+        'No disponible';
 
-    const lista = Array.from(mapa.values());
+      lista.push({
+        nombre,
+        fechaReforma,
+        ref,
+      });
+    }
+
+    cacheLeyes = lista;
 
     res.json(lista);
+
   } catch (error) {
-    console.error('Error al cargar leyes:', error);
-    res.status(500).json({ error: 'Error al cargar leyes' });
+    console.error(
+      'Error al cargar leyes:',
+      error
+    );
+
+    res.status(500).json({
+      error: error.message,
+    });
   }
 });
 
-app.get('/leyes-html', async (req, res) => {
+app.get('/api/pdf', async (req, res) => {
   try {
-    const url = decodeURIComponent(req.query.url || '');
+    const ref = req.query.ref;
 
-    if (!url) {
-      return res.status(400).json({ error: 'Falta url' });
+    if (!ref) {
+      return res.status(400).json({
+        error: 'Falta parámetro ref'
+      });
     }
 
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'es-MX,es;q=0.9,en;q=0.8',
-        'Referer': 'https://www.diputados.gob.mx/'
-      },
-      timeout: 30000
+    const response = await fetch(ref);
+
+    const html = await response.text();
+
+    const $ = cheerio.load(html);
+
+    const pdfHref = $('a[href$=".pdf"]')
+      .first()
+      .attr('href');
+
+    if (!pdfHref) {
+      return res.status(404).json({
+        error: 'PDF no encontrado'
+      });
+    }
+
+    const pdf =
+      `https://www.diputados.gob.mx/LeyesBiblio/${pdfHref.replace('../', '')}`;
+
+    res.json({
+      pdf
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const buffer = Buffer.from(await response.arrayBuffer());
-    const html = new TextDecoder('iso-8859-1').decode(buffer);
-
-    res.send(sanitizarHtml(html));
   } catch (error) {
-    console.error('Error al cargar HTML de ley:', error);
-    res.status(500).send('<html><body>Error al cargar la ley.</body></html>');
+    console.error('Error obteniendo PDF:', error);
+
+    res.status(500).json({
+      error: error.message
+    });
   }
 });
 
-app.listen(3000, () => {
-  console.log('Servidor corriendo en http://localhost:3000/leyes');
+console.log('SERVER LEYES CORRECTO');
+
+app.listen(3001, '0.0.0.0', () => {
+  console.log(
+    'Servidor corriendo en puerto 3001'
+  );
 });

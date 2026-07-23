@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  FlatList,
   Linking,
   Platform,
-  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getApiBaseUrl } from '../config';
+import { API_URL } from '../Libraries/config';
 
 export default function Leyes() {
   const [leyes, setLeyes] = useState([]);
@@ -32,29 +31,30 @@ export default function Leyes() {
         }
       }
 
-      const baseUrl = getApiBaseUrl();
-      const url = `${baseUrl}/api/leyes`;
+      const url = API_URL + '/api/leyes';
 
       console.log('URL:', url);
 
       const response = await fetch(url);
 
+      console.log('URL:', url);
       console.log('STATUS:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
 
       const data = await response.json();
 
-      console.log('DATOS:', data.length);
-
       const lista = Array.isArray(data) ? data : [];
+
       const listaSegura = lista.map((item, index) => ({
         id: item?.id != null ? String(item.id) : `ley-${index}`,
         nombre: item?.nombre ? String(item.nombre) : 'Sin nombre',
-        fechaReforma: item?.fechaReforma
-          ? String(item.fechaReforma)
-          : 'No disponible',
-        pdf: item?.pdf ? String(item.pdf) : '',
+        fechaReforma: item?.fechaReforma || 'No disponible',
+        ref: item?.pdf ? String(item.pdf) : '',
       }));
-
+      
       await AsyncStorage.setItem('leyes', JSON.stringify(listaSegura));
       setLeyes(listaSegura);
     } catch (error) {
@@ -75,17 +75,13 @@ export default function Leyes() {
     await cargarLeyes();
   };
 
-const abrirPdf = async (pdf) => {
-  console.log('PDF:', pdf);
-
-  if (!pdf) return;
-
-  try {
-    await Linking.openURL(pdf);
-  } catch (error) {
-    console.error(error);
-  }
-};
+    const abrirPdf = async (pdf) => {
+      try {
+        await Linking.openURL(pdf);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
   return (
     <View style={styles.container}>
@@ -97,33 +93,35 @@ const abrirPdf = async (pdf) => {
         Leyes: {leyes.length}
       </Text>
 
-      <FlatList
-        nestedScrollEnabled={true}
-        scrollEnabled={false}
-        data={leyes}
-        keyExtractor={(item, index) => index.toString()}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        ListEmptyComponent={
-          !loading ? (
-            <Text style={styles.emptyText}>No hay leyes disponibles</Text>
-          ) : null
-        }
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.title}>{item.nombre}</Text>
-            <Text style={styles.subtitle}>
-              Última reforma: {item.fechaReforma}
-            </Text>
-            <TouchableOpacity onPress={() => abrirPdf(item.pdf)}>
-              <Text style={styles.linkText}>
-                {item.pdf ? 'Ver PDF' : 'Sin PDF disponible'}
+      <View>
+        {!loading && leyes.length === 0 ? (
+          <Text style={styles.emptyText}>
+            No hay leyes disponibles
+          </Text>
+        ) : (
+          leyes.map((item) => (
+            <View key={item.id} style={styles.card}>
+              <Text style={styles.title}>
+                {item.nombre}
               </Text>
-            </TouchableOpacity>
-          </View>
+
+              <Text style={styles.subtitle}>
+                Última reforma: {item.fechaReforma}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => abrirPdf(item.ref)}
+              >
+                <Text style={styles.linkText}>
+                  {item.ref
+                    ? 'Ver PDF'
+                    : 'Sin PDF disponible'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ))
         )}
-      />
+      </View>
     </View>
   );
 }

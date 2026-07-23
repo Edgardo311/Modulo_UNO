@@ -1,20 +1,57 @@
 export const createEmptyCFDI = () => ({
   id: '',
+
   emisor: null,
+
   receptor: null,
-  conceptos: [],
-  impuestos: [],
-  formaPago: 'PUE',
-  moneda: 'MXN',
-  tipoDeComprobante: 'I',
-  usoCFDI: 'G03',
-  serie: '',
-  folio: '',
-  observaciones: '',
-  subtotal: 0,
-  totalImpuestos: 0,
-  total: 0,
-  status: 'draft',
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
+
+  tipoComprobante: '',
+
+  usoCFDI: '',
+
+  formaPago: '',
+
+  metodoPago: '',
+
+  moneda: '',
+
+conceptos: [
+  {
+    claveProductoServicio: '',
+
+    descripcion: '',
+
+    cantidad: '',
+
+    claveUnidad: '',
+
+    unidad: '',
+
+    valorUnitario: '',
+
+    importe: '',
+
+    descuento: '',
+
+    objetoImpuesto: '02',
+
+    aplicaIVA: false,
+
+    aplicaRetIVA: false,
+
+    aplicaRetISR: false,
+
+    aplicaIEPS: false,
+
+    baseIVA: '',
+
+    tasaIVA: '',
+
+    tasaRetIVA: '',
+
+    tasaRetISR: '',
+
+    tasaIEPS: '',
+  },
+],
 });
